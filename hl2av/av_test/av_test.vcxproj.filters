@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="custom_media_sink.cpp">
+      <Filter>Source Files\sink</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_media_type_handler.cpp">
+      <Filter>Source Files\sink</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_sink_writers.cpp">
+      <Filter>Source Files\sink</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_stream_sink.cpp">
+      <Filter>Source Files\sink</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_media_stream.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_media_source.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_media_types.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_media_queue.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="lock.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_encoder.cpp">
+      <Filter>Source Files\sink</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_decoder.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_source_readers.cpp">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_sample.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="decoder.cpp">
+      <Filter>Source Files\interface</Filter>
+    </ClCompile>
+    <ClCompile Include="sample.cpp">
+      <Filter>Source Files\interface</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{db9086fe-bacc-4437-8272-1aa6642082db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Metadata">
+      <UniqueIdentifier>{4165c475-db67-4d15-80bb-6398c367e5a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1b5455a8-28f9-41f0-8339-0f59e94fb493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{172d82f8-417b-46e8-991c-561befdccd6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sink">
+      <UniqueIdentifier>{bd7676c6-54a8-426a-b4de-2ccd5ee91887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source">
+      <UniqueIdentifier>{9fdbfba8-dcb3-45c3-a0ee-80f5f8d5b638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sink">
+      <UniqueIdentifier>{afad88c1-cee9-4960-a522-0ac9a63edbbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\source">
+      <UniqueIdentifier>{0306868f-73b7-4702-a1a9-a8d01ea011ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\common">
+      <UniqueIdentifier>{9887cff5-0930-4769-bc58-de0852b1f206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common">
+      <UniqueIdentifier>{cce2aa37-fdde-4f63-8689-71b4e2f413a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utilities">
+      <UniqueIdentifier>{da044aa3-b4b5-48a8-ba7f-42cdb2bc6b2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utilities">
+      <UniqueIdentifier>{3c8e1f01-a914-46ef-a62b-f182ab0e3f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interface">
+      <UniqueIdentifier>{cbf99b8d-6399-407e-b539-f831f5315d34}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Filter>Metadata</Filter>
+    </None>
+    <None Include="PropertySheet.props">
+      <Filter>Metadata</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <Filter>Metadata</Filter>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="custom_media_sink.h">
+      <Filter>Header Files\sink</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_media_type_handler.h">
+      <Filter>Header Files\sink</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_sink_writers.h">
+      <Filter>Header Files\sink</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_stream_sink.h">
+      <Filter>Header Files\sink</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_media_source.h">
+      <Filter>Header Files\source</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_media_stream.h">
+      <Filter>Header Files\source</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_media_types.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_media_queue.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="lock.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_encoder.h">
+      <Filter>Header Files\sink</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_decoder.h">
+      <Filter>Header Files\source</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_source_readers.h">
+      <Filter>Header Files\source</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
