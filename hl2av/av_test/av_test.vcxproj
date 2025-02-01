@@ -130,14 +130,15 @@
     <ClCompile Include="custom_media_stream.cpp" />
     <ClCompile Include="custom_media_types.cpp" />
     <ClCompile Include="custom_media_type_handler.cpp" />
-    <ClCompile Include="custom_sample.cpp" />
     <ClCompile Include="custom_sink_writers.cpp" />
     <ClCompile Include="custom_source_readers.cpp" />
     <ClCompile Include="custom_stream_sink.cpp" />
     <ClCompile Include="decoder.cpp" />
+    <ClCompile Include="encoder.cpp" />
     <ClCompile Include="lock.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="core.cpp" />
     <ClCompile Include="sample.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <None Include="PropertySheet.props" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="core.h" />
     <ClInclude Include="custom_decoder.h" />
     <ClInclude Include="custom_encoder.h" />
     <ClInclude Include="custom_media_queue.h" />
@@ -156,8 +158,11 @@
     <ClInclude Include="custom_sink_writers.h" />
     <ClInclude Include="custom_source_readers.h" />
     <ClInclude Include="custom_stream_sink.h" />
+    <ClInclude Include="encoder.h" />
     <ClInclude Include="lock.h" />
     <ClInclude Include="log.h" />
+    <ClInclude Include="decoder.h" />
+    <ClInclude Include="sample.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

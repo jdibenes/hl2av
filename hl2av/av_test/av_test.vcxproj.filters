@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="custom_media_sink.cpp">
       <Filter>Source Files\sink</Filter>
     </ClCompile>
@@ -41,13 +40,19 @@
     <ClCompile Include="custom_source_readers.cpp">
       <Filter>Source Files\source</Filter>
     </ClCompile>
-    <ClCompile Include="custom_sample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="decoder.cpp">
       <Filter>Source Files\interface</Filter>
     </ClCompile>
     <ClCompile Include="sample.cpp">
+      <Filter>Source Files\interface</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="encoder.cpp">
+      <Filter>Source Files\interface</Filter>
+    </ClCompile>
+    <ClCompile Include="core.cpp">
       <Filter>Source Files\interface</Filter>
     </ClCompile>
   </ItemGroup>
@@ -114,6 +119,9 @@
     <Filter Include="Source Files\interface">
       <UniqueIdentifier>{cbf99b8d-6399-407e-b539-f831f5315d34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\interface">
+      <UniqueIdentifier>{631c572c-105f-4fe0-984c-a252b7bceecd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -167,6 +175,18 @@
     </ClInclude>
     <ClInclude Include="custom_source_readers.h">
       <Filter>Header Files\source</Filter>
+    </ClInclude>
+    <ClInclude Include="decoder.h">
+      <Filter>Header Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="encoder.h">
+      <Filter>Header Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="sample.h">
+      <Filter>Header Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
+      <Filter>Header Files\interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
