@@ -1,7 +1,6 @@
 
 #include <mfapi.h>
-#include <mfidl.h>
-#include <stdint.h>
+#include "custom_media_types.h"
 
 //-----------------------------------------------------------------------------
 // Functions
@@ -70,4 +69,10 @@ void Sample_GetResolution(void* self, uint32_t& width, uint32_t& stride, uint32_
 void Sample_Release(void* self)
 {
     ((IMFSample*)self)->Release();
+}
+
+// OK
+bool Buffer_GetAudioParameters(void* base, uint8_t& channels, uint16_t& samplerate)
+{
+    return TranslateADTSOptions((BYTE*)base, channels, samplerate);
 }

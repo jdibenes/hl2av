@@ -37,6 +37,9 @@ void sample_getresolution(void* self, uint32_t& width, uint32_t& stride, uint32_
 HL2AV_IMPORT
 void sample_release(void* self);
 
+HL2AV_IMPORT
+uint8_t buffer_getaudioparameters(void* base, uint8_t& channels, uint16_t& samplerate);
+
 //-----------------------------------------------------------------------------
 // Encoder
 //-----------------------------------------------------------------------------

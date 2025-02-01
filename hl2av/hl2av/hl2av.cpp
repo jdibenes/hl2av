@@ -62,6 +62,12 @@ void sample_release(void* self)
     Sample_Release(self);
 }
 
+HL2AV_EXPORT
+uint8_t buffer_getaudioparameters(void* base, uint8_t& channels, uint16_t& samplerate)
+{
+    return Buffer_GetAudioParameters(base, channels, samplerate);
+}
+
 //-----------------------------------------------------------------------------
 // Encoder
 //-----------------------------------------------------------------------------
