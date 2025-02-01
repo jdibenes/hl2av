@@ -1,7 +1,5 @@
 
 #include <windows.h>
-#include <mfapi.h>
-#include <codecapi.h>
 
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
@@ -10,8 +8,10 @@
 #include <winrt/Windows.UI.Composition.h>
 #include <winrt/Windows.UI.Input.h>
 
-#include "custom_encoder.h"
-#include "custom_decoder.h"
+#include "encoder.h"
+#include "decoder.h"
+#include "sample.h"
+#include "core.h"
 #include "log.h"
 
 using namespace winrt;
@@ -25,99 +25,85 @@ using namespace Windows::UI::Composition;
 
 constexpr LONGLONG HNS_BASE = 10 * 1000 * 1000;
 
-IMFSample* CreateTestImage(DWORD size, LONGLONG sample_time, LONGLONG duration)
+void* CreateTestImage(DWORD size, LONGLONG time, LONGLONG duration)
 {
-    IMFMediaBuffer* pBuffer; // Release
-    BYTE* base;
-    IMFSample* pSample;
-
-    MFCreateMemoryBuffer(size, &pBuffer);
-
-    pBuffer->Lock(&base, NULL, NULL);
+    void* base;
+    void* sample = Sample_Create(base, size);
+    Sample_SetInfo(sample, time, duration);
     memset(base, 0, size);
-    pBuffer->Unlock();
-    pBuffer->SetCurrentLength(size);
-
-    MFCreateSample(&pSample);
-
-    pSample->SetSampleTime(sample_time);
-    pSample->SetSampleDuration(duration);
-    pSample->AddBuffer(pBuffer);
-
-    pBuffer->Release();
-
-    return pSample;
+    return sample;
 }
 
 void TestVideo(int N)
 {
-    H26xFormat format;
+    H26xFormat fe;
 
-    format.width = 640;
-    format.height = 360;
-    format.framerate = 30;
-    format.divisor = 1;
-    format.profile = H264Profile_Main;
-    format.level = H26xLevel_Default;
-    format.bitrate = (format.width * format.height * format.framerate * 12) / 100;
+    fe.width = 640;
+    fe.height = 360;
+    fe.framerate = 30;
+    fe.divisor = 1;
+    fe.profile = H264Profile_Main;
+    fe.level = H26xLevel_Default;
+    fe.bitrate = (fe.width * fe.height * fe.framerate * 12) / 100;
 
-    H26xFormat format_decoder;
+    H26xFormat fd;
 
-    format_decoder.profile = format.profile;
+    fd.profile = fe.profile;
 
-    auto encoder = CustomEncoder::CreateForVideo(VideoSubtype_NV12, format, format.width, {});
-    auto decoder = CustomDecoder::CreateForVideo(format_decoder, VideoSubtype_NV12);
+    void* encoder = Encoder_CreateForVideo(fe.width, fe.width, fe.height, fe.framerate, fe.divisor, VideoSubtype_NV12, fe.profile, fe.level, fe.bitrate);
+    void* decoder = Decoder_CreateForVideo(fd.profile, VideoSubtype_NV12);
 
     ShowMessage("Video Test BEGIN");
 
     for (int i = 0; i < N; ++i)
     {
-        IMFSample* pTestImage = CreateTestImage((format.width * format.height * 3) / 2, i * (HNS_BASE / format.framerate), HNS_BASE / format.framerate);
-        encoder->Push(pTestImage);
+        void* pTestImage = CreateTestImage((fe.width * fe.height * 3) / 2, i * (HNS_BASE / fe.framerate), HNS_BASE / fe.framerate);
 
-        IMFMediaBuffer* pBuffer1;
-        DWORD cur_size1;
-        DWORD max_size1;
-        pTestImage->ConvertToContiguousBuffer(&pBuffer1);
-        pBuffer1->GetCurrentLength(&cur_size1);
-        pBuffer1->GetMaxLength(&max_size1);
-        ShowMessage("TestImage size: (%d, %d)", cur_size1, max_size1);
-        pBuffer1->Release();
+        void* base1;
+        uint32_t size1;
+        Sample_GetBase(pTestImage, base1, size1);
+        ShowMessage("TestImage size: %d", size1);
 
-        pTestImage->Release();
+        Encoder_Push(encoder, pTestImage); // encoder->Push(pTestImage);
+
+        Sample_Release(pTestImage); // pTestImage->Release();
     }
 
     for (int i = 0; i < N; ++i)
     {
-        IMFSample* pTestEncoded;
-        encoder->Pull(&pTestEncoded);
-        decoder->Push(pTestEncoded);
+        Encoder_Peek(encoder);
+        void* pTestEncoded = Encoder_Pull(encoder); // encoder->Pull(&pTestEncoded);
 
-        IMFMediaBuffer* pBuffer2;
-        DWORD cur_size2;
-        DWORD max_size2;
-        pTestEncoded->ConvertToContiguousBuffer(&pBuffer2);
-        pBuffer2->GetCurrentLength(&cur_size2);
-        pBuffer2->GetMaxLength(&max_size2);
-        ShowMessage("TestEncoded size: (%d, %d)", cur_size2, max_size2);
-        pBuffer2->Release();
+        void* base2;
+        uint32_t size2;
+        int64_t timestamp2;
+        int64_t duration2;
+        uint32_t cleanpoint2;
+        Sample_GetBase(pTestEncoded, base2, size2);
+        Sample_GetInfo(pTestEncoded, timestamp2, duration2, cleanpoint2);
+        ShowMessage("TestEncoded size: %d time: %lld duration: %lld cleanpoint: %d", size2, timestamp2, duration2, cleanpoint2);
 
-        pTestEncoded->Release();
+        Decoder_Push(decoder, pTestEncoded); // decoder->Push(pTestEncoded);
 
-        IMFSample* pTestDecoded;
-        decoder->Pull(&pTestDecoded);
+        Sample_Release(pTestEncoded); // pTestEncoded->Release();
 
-        IMFMediaBuffer* pBuffer3;
-        DWORD cur_size3;
-        DWORD max_size3;
-        pTestDecoded->ConvertToContiguousBuffer(&pBuffer3);
-        pBuffer3->GetCurrentLength(&cur_size3);
-        pBuffer3->GetMaxLength(&max_size3);
-        ShowMessage("TestDecoded size: (%d, %d)", cur_size3, max_size3);
-        pBuffer3->Release();
+        Decoder_Peek(decoder);
+        void* pTestDecoded = Decoder_Pull(decoder); // decoder->Pull(&pTestDecoded);
+        
+        void* base3;
+        uint32_t size3;
+        int64_t timestamp3;
+        int64_t duration3;
+        uint32_t cleanpoint3;
+        Sample_GetBase(pTestDecoded, base3, size3);
+        Sample_GetInfo(pTestDecoded, timestamp3, duration3, cleanpoint3);
+        ShowMessage("TestDecoded size: %d time: %lld duration: %lld cleanpoint: %d", size3, timestamp3, duration3, cleanpoint3);
 
-        pTestDecoded->Release();
+        Sample_Release(pTestDecoded); // pTestDecoded->Release();
     }
+
+    Encoder_Destroy(encoder);
+    Decoder_Destroy(decoder);
 
     ShowMessage("Video Test END");
 }
@@ -126,85 +112,79 @@ void TestAudio(int N)
 {
     int const sample_group = 1024;
 
-    AACFormat format;
+    AACFormat fe;
 
-    format.channels = 2;
-    format.samplerate = 48000;
-    format.profile = AACProfile_24000;
-    format.level = AACLevel_L4;
+    fe.channels = 2;
+    fe.samplerate = 48000;
+    fe.profile = AACProfile_24000;
+    fe.level = AACLevel_L4;
 
-    AACFormat format_decoder;
+    AACFormat fd;
 
-    //format_decoder.channels = 1; // from ADTS
-    //format_decoder.samplerate = 44100; // from ADTS 
-    format_decoder.profile = AACProfile_24000; // Anything but NONE
-    format_decoder.level = AACLevel_NotSet;
+    fd.profile = AACProfile_24000;
+    fd.level = AACLevel_NotSet;
 
-    auto encoder = CustomEncoder::CreateForAudio(AudioSubtype::AudioSubtype_S16, format);
-    std::unique_ptr<CustomDecoder> decoder;
+    void* encoder = Encoder_CreateForAudio(fe.channels, fe.samplerate, AudioSubtype::AudioSubtype_S16, fe.profile, fe.level);
+    void* decoder = nullptr;
 
     ShowMessage("Audio Test BEGIN");
 
     for (int i = 0; i < N; ++i)
     {
-        IMFSample* pTestImage = CreateTestImage(format.channels * sizeof(int16_t) * sample_group, (i + 1) * (sample_group * (HNS_BASE / format.samplerate)), sample_group * (HNS_BASE / format.samplerate));
-        encoder->Push(pTestImage);
+        void* pTestImage = CreateTestImage(fe.channels * sizeof(int16_t) * sample_group, (i + 1) * (sample_group * (HNS_BASE / fe.samplerate)), sample_group * (HNS_BASE / fe.samplerate));
+        
+        void* base1;
+        uint32_t size1;
+        Sample_GetBase(pTestImage, base1, size1);
+        ShowMessage("TestImage size: %d", size1);
 
-        IMFMediaBuffer* pBuffer1;
-        DWORD cur_size1;
-        DWORD max_size1;
-        pTestImage->ConvertToContiguousBuffer(&pBuffer1);
-        pBuffer1->GetCurrentLength(&cur_size1);
-        pBuffer1->GetMaxLength(&max_size1);
-        ShowMessage("TestImage size: (%d, %d)", cur_size1, max_size1);
-        pBuffer1->Release();
+        Encoder_Push(encoder, pTestImage); // encoder->Push(pTestImage);
 
-        pTestImage->Release();
+        Sample_Release(pTestImage); // pTestImage->Release();
     }
 
     for (int i = 0; i < (N - 2); ++i)
     {
-        IMFSample* pTestEncoded;
-        encoder->Pull(&pTestEncoded);
-        
-        IMFMediaBuffer* pBuffer2;
-        DWORD cur_size2;
-        DWORD max_size2;
-        BYTE* data;
-        pTestEncoded->ConvertToContiguousBuffer(&pBuffer2);
-        pBuffer2->GetCurrentLength(&cur_size2);
-        pBuffer2->GetMaxLength(&max_size2);
-        pBuffer2->Lock(&data, NULL, NULL);
-        pBuffer2->Unlock();
-        ShowMessage("TestEncoded size: (%d, %d)", cur_size2, max_size2);
-        ShowMessage("ADTS: %x %x %x %x %x %x %x", data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
-        pBuffer2->Release();
+        Encoder_Peek(encoder);
+        void* pTestEncoded = Encoder_Pull(encoder); // encoder->Pull(&pTestEncoded);
+
+        void* base2;
+        uint32_t size2;
+        int64_t timestamp2;
+        int64_t duration2;
+        uint32_t cleanpoint2;
+        Sample_GetBase(pTestEncoded, base2, size2);
+        Sample_GetInfo(pTestEncoded, timestamp2, duration2, cleanpoint2);
+        ShowMessage("TestEncoded size: %d time: %lld duration: %lld cleanpoint: %d", size2, timestamp2, duration2, cleanpoint2);
 
         if (!decoder)
         {
-            bool ok = TranslateADTSOptions(data, format_decoder.channels, format_decoder.samplerate);
-            ShowMessage("AAC Parameters: (%d, %d, %d)", ok, format_decoder.channels, format_decoder.samplerate);
-            decoder = CustomDecoder::CreateForAudio(format_decoder, AudioSubtype::AudioSubtype_S16);            
+            bool ok = TranslateADTSOptions((BYTE*)base2, fd.channels, fd.samplerate);
+            ShowMessage("AAC Parameters: (%d, %d, %d)", ok, fd.channels, fd.samplerate);
+            decoder = Decoder_CreateForAudio(fd.channels, fd.samplerate, fd.profile, AudioSubtype::AudioSubtype_S16);
         }        
         
-        decoder->Push(pTestEncoded);
+        Decoder_Push(decoder, pTestEncoded); // decoder->Push(pTestEncoded);
 
-        pTestEncoded->Release();
+        Sample_Release(pTestEncoded); // pTestEncoded->Release();
 
-        IMFSample* pTestDecoded;
-        decoder->Pull(&pTestDecoded);
+        Decoder_Peek(decoder);
+        void* pTestDecoded = Decoder_Pull(decoder); // decoder->Pull(&pTestDecoded);
 
-        IMFMediaBuffer* pBuffer3;
-        DWORD cur_size3;
-        DWORD max_size3;
-        pTestDecoded->ConvertToContiguousBuffer(&pBuffer3);
-        pBuffer3->GetCurrentLength(&cur_size3);
-        pBuffer3->GetMaxLength(&max_size3);
-        ShowMessage("TestDecoded size: (%d, %d)", cur_size3, max_size3);
-        pBuffer3->Release();
+        void* base3;
+        uint32_t size3;
+        int64_t timestamp;
+        int64_t duration;
+        uint32_t cleanpoint;
+        Sample_GetBase(pTestDecoded, base3, size3);
+        Sample_GetInfo(pTestDecoded, timestamp, duration, cleanpoint);
+        ShowMessage("TestDecoded size: %d time: %lld duration: %lld cleanpoint: %d", size3, timestamp, duration, cleanpoint);
 
-        pTestDecoded->Release();
+        Sample_Release(pTestDecoded); // pTestDecoded->Release();
     }
+
+    Encoder_Destroy(encoder);
+    Decoder_Destroy(decoder);
 
     ShowMessage("Audio Test END");
 }
@@ -244,7 +224,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
         CoreWindow window = CoreWindow::GetForCurrentThread();
         window.Activate();
 
-        MFStartup(MF_VERSION);
+        Core_Startup();
 
         TestVideo(5);
         TestAudio(5);
