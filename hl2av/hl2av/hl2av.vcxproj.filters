@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b9b58640-e3e2-4dd8-9ad6-44c8c8352e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{fc9417bd-797d-4f97-9d6f-10109f3cd044}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Metadata">
+      <UniqueIdentifier>{c9a5e87f-c545-4404-9600-4557f8436062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{ff187887-9081-46d6-bbff-e11df270546d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\av">
+      <UniqueIdentifier>{57159484-9ef1-4a4c-ac66-8c5a925296d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\av_test\core.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_decoder.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_encoder.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_media_queue.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_media_sink.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_media_source.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_media_stream.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_media_type_handler.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_media_types.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_sink_writers.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_source_readers.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\custom_stream_sink.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\decoder.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\encoder.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\lock.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\log.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\av_test\sample.cpp">
+      <Filter>Libraries\av</Filter>
+    </ClCompile>
+    <ClCompile Include="hl2av.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\av_test\core.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_decoder.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_encoder.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_media_queue.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_media_sink.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_media_source.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_media_stream.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_media_type_handler.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_media_types.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_sink_writers.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_source_readers.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\custom_stream_sink.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\decoder.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\encoder.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\lock.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\log.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\av_test\sample.h">
+      <Filter>Libraries\av</Filter>
+    </ClInclude>
+    <ClInclude Include="hl2av.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Filter>Metadata</Filter>
+    </None>
+  </ItemGroup>
+</Project>
