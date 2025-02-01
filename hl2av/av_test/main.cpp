@@ -229,7 +229,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
         Core_Startup();
 
         TestVideo(5);
-        TestAudio(5);
+        //TestAudio(5);
         
         while (!m_windowClosed)
         {
