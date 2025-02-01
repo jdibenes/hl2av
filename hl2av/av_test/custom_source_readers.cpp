@@ -25,6 +25,10 @@ CustomSourceReader::CustomSourceReader(HOOK_SOURCE_PROC hookproc, void* hookpara
     m_pSourceReader->SetCurrentMediaType(0, NULL, pOutputType);
 
     pSourceAttr->Release();
+
+    m_stride = 0;
+    m_width  = 0;
+    m_height = 0;
 }
 
 // OK
