@@ -95,9 +95,11 @@ void TestVideo(int N)
         int64_t timestamp3;
         int64_t duration3;
         uint32_t cleanpoint3;
+        uint32_t width, stride, height;
         Sample_GetBase(pTestDecoded, base3, size3);
         Sample_GetInfo(pTestDecoded, timestamp3, duration3, cleanpoint3);
-        ShowMessage("TestDecoded size: %d time: %lld duration: %lld cleanpoint: %d", size3, timestamp3, duration3, cleanpoint3);
+        Sample_GetResolution(pTestDecoded, width, stride, height);
+        ShowMessage("TestDecoded size: %d time: %lld duration: %lld cleanpoint: %d dims: (%d,%d,%d)", size3, timestamp3, duration3, cleanpoint3, width, stride, height);
 
         Sample_Release(pTestDecoded); // pTestDecoded->Release();
     }
