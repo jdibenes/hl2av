@@ -1,10 +1,16 @@
-# Pipeline Test
-# Receive encoded frame from hl2ss
-# Send encoded frame to hl2av
-# hl2av decode
-# hl2av encode
-# Receive encoded frame from hl2av
-# Decode frame with pyav
+#------------------------------------------------------------------------------
+# Pipeline Test:
+# Receive encoded frame from hl2ss (h264 encode mf)
+# Send encoded frame to hl2av      (MQ)
+# hl2av decode                     (h264 decode mf)
+# hl2av encode                     (h264 encode mf)
+# Receive encoded frame from hl2av (MQX)
+# Decode frame with pyav           (h264 decode av)
+
+# Note that MQ/MQX are used for test transfers which are not efficient for real
+# time streams but simplify testing
+# Press ESC to stop
+#------------------------------------------------------------------------------
 
 import cv2
 import hl2ss_imshow
@@ -74,6 +80,7 @@ if __name__ == '__main__':
 
         if ((cv2.waitKey(1) & 0xFF) == 27):
             break
+
 
     client_pv.close()
     client_mq.close()

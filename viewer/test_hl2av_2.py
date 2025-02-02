@@ -1,12 +1,18 @@
-# Pipeline Test
-# Receive encoded frame from hl2ss
-# Send encoded frame to hl2av
-# hl2av decode
-# hl2av encode
-# Receive encoded frame from hl2av
-# Decode frame with pyav
+#------------------------------------------------------------------------------
+# Pipeline Test:
+# Receive decoded frame from hl2ss (h264 encode mf + h264 decode av)
+# Encode frame with pyav           (h264 encode av)
+# Send encoded frame to hl2av      (MQ)
+# hl2av decode                     (h264 decode mf)
+# hl2av encode                     (h264 encode mf)
+# Receive encoded frame from hl2av (MQX)
+# Decode frame with pyav           (h264 decode av)
 
-import fractions
+# Note that MQ/MQX are used for test transfers which are not efficient for real
+# time streams but simplify testing
+# Press ESC to stop
+#------------------------------------------------------------------------------
+
 import multiprocessing as mp
 import cv2
 import hl2ss_imshow
@@ -62,20 +68,12 @@ if __name__ == '__main__':
     cv2.namedWindow('Video')
 
     encoder = av.CodecContext.create('h264', 'w')
-    encoder.pix_fmt = 'nv12'
+    encoder.pix_fmt = 'yuv420p'
     encoder.framerate = framerate
     encoder.width = width
     encoder.height = height
-    encoder.bit_rate_tolerance = 0
-    encoder.bit_rate = 2*1024*1024
-    encoder.profile = 66
-    #encoder.ticks_per_frame = 1 NO
-    encoder.time_base = fractions.Fraction(1, 10000000)
-    encoder.gop_size = framerate
-    #encoder.max_bit_rate = 2*1024*1024 # NO WR
-    #encoder.has_b_frames = False # NO WR
-    #encoder.time_base = fractions.Fraction(1, hl2ss.TimeBase.HUNDREDS_OF_NANOSECONDS)
-    index = 0
+    encoder.bit_rate = 1*1024*1024
+
     state = 0
     while (True):
         if ((cv2.waitKey(1) & 0xFF) == 27):
@@ -86,16 +84,9 @@ if __name__ == '__main__':
             continue
 
         frame = av.VideoFrame.from_ndarray(data.payload.image, format='bgr24')
-        frame.pts = index*333333
-        frame.dts = index*333333
-        #frame.time = index # no WR
-        frame.time_base = fractions.Fraction(1, 10000000)
-
-        index += 1
 
         encoded_frame = bytearray()
         packets = encoder.encode(frame)
-        print(f'PACKETS:  {len(packets)}')
         for packet in packets:
             encoded_frame.extend(bytes(packet))
 
@@ -124,8 +115,6 @@ if __name__ == '__main__':
         buffer.push_encoded_frame(bytes(coalesced_frame))
         client_mq.push(buffer)
         client_mq.pull(buffer)
-
-        print(f'server response')
         
         while (True):
             msg = client_mqx.pull()
@@ -140,40 +129,6 @@ if __name__ == '__main__':
                     cv2.imshow('Video', image)
                     cv2.waitKey(1)
 
-
-
-
-        #image = decoder_pv.decode(coalesced_frame, 'bgr24')
-        #if (image is not None):
-        #    cv2.imshow('Video', image)
-        #    cv2.waitKey(1)
-        #else:
-        #    print('No image')
-
-        
-
-
-
-        #image = encoded_frame #decoder_pv.decode(encoded_frame, 'bgr24')
-        #if (image is not None):
-        #    cv2.imshow('Video', image)
-        #    cv2.waitKey(1)
-
-        '''
-        
-
-        
-        
-        
-
-        
-
-        
-
-        
-
-        
-        '''
     
     sink_pv.detach()
     producer.stop(hl2ss.StreamPort.PERSONAL_VIDEO)
@@ -182,4 +137,3 @@ if __name__ == '__main__':
     client_mqx.close()
 
     hl2ss_lnm.stop_subsystem_pv(host, hl2ss.StreamPort.PERSONAL_VIDEO)
-
