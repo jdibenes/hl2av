@@ -1,3 +1,3 @@
 # hl2av (WIP)
 
-Simple H264 Encoder/Decoder for HoloLens 2.
+Simple H264 Encoder/Decoder for HoloLens 2 using Media Foundation.
